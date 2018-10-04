@@ -8,12 +8,12 @@
 	<div class="header">
 		<h1>Monster Chucker</h1>
 		<nav>
-			<label><input type="radio" name="page" value="MonsterTable" checked>Monster Table</input></label>
-			<label><input type="radio" name="page" value="MonsterEditor">Monster Editor</input></label>
-			<label><input type="radio" name="page" value="MonsterLists">Monster Lists</input></label>
-			<label><input type="radio" name="page" value="EncounterBuilder">Encounter Builder</input></label>
-			<label><input type="radio" name="page" value="EncounterSheet">Encounter Sheet</input></label>
-			<label><input type="radio" name="page" value="SpellList">Spell List</input></label>
+			<input type="radio" name="page" value="MonsterTable" id="tabMonsterTable" checked></input><label for="tabMonsterTable">Monster Table</label>
+			<input type="radio" name="page" value="MonsterEditor" id="tabMonsterEditor"></input><label for="tabMonsterEditor">Monster Editor</label>
+			<input type="radio" name="page" value="MonsterLists" id="tabMonsterLists"></input><label for="tabMonsterLists">Monster Lists</label>
+			<input type="radio" name="page" value="EncounterBuilder" id="tabEncounterBuilder"></input><label for="tabEncounterBuilder">Encounter Builder</label>
+			<input type="radio" name="page" value="EncounterSheet" id="tabEncounterSheet"></input><label for="tabEncounterSheet">Encounter Sheet</label>
+			<input type="radio" name="page" value="SpellList" id="tabSpellList"></input><label for="tabSpellList">Spell List</label>
 		</nav>
 	</div>
 	<div class="content">
@@ -31,10 +31,10 @@
 					<th data-field="monsterAlignment">Alignment</th>
 					<th data-field="monsterHp">HP</th>
 					<th data-field="monsterAc">AC</th>
-					<th data-field="">Defenses</th>
-					<th data-field="">SQ</th>
-					<th data-field="">Actions</th>
-					<th data-field="">Edit</th>
+					<th data-calc="defenses">Defenses</th>
+					<th data-calc="qualities">SQ</th>
+					<th data-calc="actions">Actions</th>
+					<th data-calc="buttons">Edit</th>
 				</tr>
 			</table>
 		</div>

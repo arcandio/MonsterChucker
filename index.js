@@ -83,74 +83,73 @@ function SwitchPage(e){
    #    #    # #####  ###### ###### 
 
 */
-function MTPopulateRows () {
-	// populate each row based on the `data-monster` attribute.
-	// look it up from data.monsters
-	let rows = toArray(document.getElementsByClassName('monster'));
-	for (var i = rows.length - 1; i >= 0; i--) {
-		let name = rows[i].getAttribute('data-monster');
-		let monster = data.monsters[name];
-		console.log(monster);
-	}
-}
-function MTResizeTable () {
+
+function MTInitTable () {
 	let monsters = data.monsters;
-	let rows = document.getElementsByClassName('monster');
-	if (monsters && rows) {
-		let monstercount = Object.keys(monsters).length;
-		let rowcount = rows.length;
-		if (monstercount > rowcount){
-			// Add rows to the table
-			let newrows = monstercount - rowcount;
-			for (let i = newrows + 1; i > 0; i--){
-				MTAddRow();
-				// TODO: Assign the data-monster attribute to each
-				// Populate the data to all rows
-			}
-		}
-		else if (rowcount > monstercount) {
-			// remove rows from the table
-			let removerows = rowcount - monstercount;
-			for (let i = removerows + 1; i > 0; i--){
-				MTRemoveRow();
-			}
-		}
+	let monstercount = Object.keys(monsters).length;
+	for (let i = 0; i < monstercount; i++){
+		let monsterName = data.monsters[Object.keys(data.monsters)[i]].monsterName;
+		console.log(monsterName);
+		MTAddRow(monsterName);
 	}
 }
-function MTAddRow (monster){
-	/*if(!monster){
-		console.log('no monster passed');
-		return;
-	}*/
+function MTAddRow (monsterName){
 	let newrow = document.createElement('tr');
 	newrow.classList.add("monster");
-	newrow.setAttribute('data-monster', 'Facemonster');
+	newrow.setAttribute('data-monster', monsterName);
 	let children = [].slice.call(data.MTheader.children);
 	children.forEach(function(child){
 		let newcell = document.createElement('td');
 		newcell.innerHTML = '-'
-		//newcell.innerHTML = MTFillCell(MTGetCellParams(child), monster);
+		newcell.setAttribute('data-field', child.getAttribute('data-field'));
+		newcell.setAttribute('data-calc', child.getAttribute('data-calc'));
 		newrow.append(newcell);
 	});
-	if (monster) {
-		// apply monster stats
-	}
 	data.MTheader.parentElement.append(newrow);
+	MTPopulateRow(monsterName);
 }
-function MTRemoveRow(){
-
+function MTPopulateRow (monsterName) {
+	// Get the target row
+	let row = document.querySelector('[data-monster="' + monsterName + '"]');
+	let monsterObject = data.monsters[monsterName];
+	// iterate through cells and get values from monster
+	let cells = Array.from(row.getElementsByTagName('td'));
+	cells.forEach( function(cell, i) {
+		// which value should we get?
+		let field = cell.getAttribute('data-field');
+		//console.log(field);
+		// for some insane magical reason cell.getAttributes() returns 'null' as a string, not null.
+		if (field !== 'null') {
+			cell.innerHTML = monsterObject[field];
+		}
+		else {
+			let type = cell.getAttribute('data-calc');
+			//console.log(type)
+			//value = type;
+			switch (type){
+				case 'defenses':
+					cell.innerHTML = 'd';
+					break;
+				case 'qualities':
+					cell.innerHTML = 'q';
+					break;
+				case 'actions':
+					cell.innerHTML = 'a';
+					break;
+				case 'buttons':
+					let editButton = document.createElement('button');
+					editButton.innerHTML = 'E';
+					cell.appendChild(editButton);
+					let delButton = document.createElement('button');
+					delButton.innerHTML = 'X';
+					cell.appendChild(delButton);
+					break;
+			}
+		}
+	});
 }
-function MTGetCellParams (headercell) {
-	let params = {}
-	params.inputType = headercell.getAttribute('data-field');
-	params.inputName = headercell.innerHTML;
-	return params;
-}
-function MTFillCell (params, monster) {
-	let elem = '';
-	let key = params.inputName.toLowerCase();
-	elem = monster[key];
-	return elem;
+function MTDeleteMonster(monster){
+	// Actually move them to data.trash
 }
 function MTGetColumns () {
 	data.MTheader = document.querySelector("#MonsterTable table tr");
@@ -252,8 +251,7 @@ function LoadDefaultMonsters() {
 	request.onload = function () {
 		data.monsters = request.response;
 		//console.log(data.monsters);
-		MTResizeTable();
-		MTPopulateRows();
+		MTInitTable();
 	}
 }
 function LoadFromLS () {

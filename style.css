@@ -109,3 +109,15 @@ label {
    -ms-user-select: none;
    user-select: none;
 }
+nav input[type="radio"] {
+	display: none;
+}
+nav label[for] {
+	padding: 4px;
+	border: 1px solid;
+	display: block;
+	float: left;
+}
+nav input[type="radio"]:checked + label[for] {
+	background-color: #fff;
+}
