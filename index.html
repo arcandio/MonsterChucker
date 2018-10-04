@@ -1,0 +1,495 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Monster Chucker</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+	<div class="header">
+		<h1>Monster Chucker</h1>
+		<nav>
+			<label><input type="radio" name="page" value="MonsterTable" checked>Monster Table</input></label>
+			<label><input type="radio" name="page" value="MonsterEditor">Monster Editor</input></label>
+			<label><input type="radio" name="page" value="MonsterLists">Monster Lists</input></label>
+			<label><input type="radio" name="page" value="EncounterBuilder">Encounter Builder</input></label>
+			<label><input type="radio" name="page" value="EncounterSheet">Encounter Sheet</input></label>
+			<label><input type="radio" name="page" value="SpellList">Spell List</input></label>
+		</nav>
+	</div>
+	<div class="content">
+		<div id="MonsterTable" class="page activePage">
+			<h2>MonsterTable</h2>
+			<table>
+				<tr>
+					<th data-coltype="img">Icon</th>
+					<th data-coltype="txt">Name</th>
+					<th data-coltype="num">CR</th>
+					<th data-coltype="num">XP</th>
+					<th data-coltype="txt">Source</th>
+					<th data-coltype="dd">Type</th>
+					<th data-coltype="txt">Subtype</th>
+					<th data-coltype="dd">Alignment</th>
+					<th data-coltype="num">HP</th>
+					<th data-coltype="num">AC</th>
+					<th data-coltype="list">Defenses</th>
+					<th data-coltype="list">SQ</th>
+					<th data-coltype="list">Actions</th>
+					<th data-coltype="button">Edit</th>
+				</tr>
+			</table>
+		</div>
+		<div id="MonsterEditor" class="page">
+			<h2>MonsterEditor</h2>
+			<div>
+				<button onClick="SaveMonster()">Save Monster</button>
+				<select>
+					<option>monster</option>
+				</select>
+			</div>
+			<div>
+				<label>Name: <input id="monsterName" type="text" placeholder="name"/></label>
+				<label>Description: <textarea id="monsterDescription" type="text" placeholder="description"/></textarea></label>
+				<label>CR: <input id="monsterCr" type="number" placeholder="0"/></label>
+				<label>XP: <input id="monsterXp" type="number" placeholder="0" disabled/></label>
+				<label>Source: <input id="monsterSource" type="text" placeholder="mm 123"/></label>
+			</div>
+			<div>
+				<label>Size:
+					<select id="monsterSize">
+						<option>Tiny</option>
+						<option>Small</option>
+						<option>Medium</option>
+						<option>Large</option>
+						<option>Huge</option>
+						<option>Gargantuan</option>
+					</select>
+				</label>
+				<label>Type:
+					<select id="monsterType">
+						<option>Humanoid</option>
+						<option>Fiend</option>
+						<option>Celestial</option>
+						<option>Construct</option>
+						<option>Monstrosity</option>
+					</select>
+				</label>
+				<label>Subtype: <input id="monsterSubtype" type="text" /></label>
+				<label>Alignment: 
+					<select id="monsterAlignment">
+						<option>Unaligned</option>
+						<option>Lawful Good</option>
+						<option>Neutral Good</option>
+						<option>Chatoic Good</option>
+						<option>Lawful Neutral</option>
+						<option>True Neutral</option>
+						<option>Chatotic Neutral</option>
+						<option>Lawful Evil</option>
+						<option>Neutral Evil</option>
+						<option>Chaotic Evil</option>
+					</select>
+				</label>
+				<label>Icon: <input id="monsterIcon" type="text" /></label>
+			</div>
+			<div>
+				<label>AC: <input id="monsterAc" type="number" value="10" min="1"/></label>
+				<label>HP: <input id="monsterHp" type="number" placeholder="20" min="1"/></label>
+			</div>
+			<div>
+				<p>Movement</p>
+				<label>Speed: <input id="movementSpeed" type="number" placeholder="30" min="0" step="5"/></label>
+				<label>Fly: <input id="movementFly" type="number" placeholder="30" min="0" step="5"/></label>
+				<label>Hover: <input id="movementHover" type="checkbox" /></label>
+				<label>Burrow: <input id="movementBurrow" type="number" placeholder="30" min="0" step="5"/></label>
+				<label>Climb: <input id="movementClimb" type="number" placeholder="30" min="0" step="5"/></label>
+			</div>
+			<div>
+				<p>Stats</p>
+				<table>
+					<tr>
+						<th></th>
+						<th>Strength</th>
+						<th>Dexterity</th>
+						<th>Constitution</th>
+						<th>Intelligence</th>
+						<th>Wisdom</th>
+						<th>Charisma</th>
+					</tr>
+					<tr>
+						<th>Stat</th>
+						<td><input id="statStrength" type="number" value="10" min="0"/></td>
+						<td><input id="statDexterity" type="number" value="10" min="0"/></td>
+						<td><input id="statConstiution" type="number" value="10" min="0"/></td>
+						<td><input id="statIntelligence" type="number" value="10" min="0"/></td>
+						<td><input id="statWisdom" type="number" value="10" min="0"/></td>
+						<td><input id="statCharisma" type="number" value="10" min="0"/></td>
+					</tr>
+					<tr>
+						<th>Modifier</th>
+						<td><input type="number" value="0" disabled></td>
+						<td><input type="number" value="0" disabled></td>
+						<td><input type="number" value="0" disabled></td>
+						<td><input type="number" value="0" disabled></td>
+						<td><input type="number" value="0" disabled></td>
+						<td><input type="number" value="0" disabled></td>
+					</tr>
+					<tr>
+						<th>Save Proficiency</th>
+						<td><input id="saveProfStr" type="checkbox"></td>
+						<td><input id="saveProfDex" type="checkbox"></td>
+						<td><input id="saveProfCon" type="checkbox"></td>
+						<td><input id="saveProfInt" type="checkbox"></td>
+						<td><input id="saveProfWis" type="checkbox"></td>
+						<td><input id="saveProfCha" type="checkbox"></td>
+					</tr>
+					<tr>
+						<th>Saves</th>
+						<td><input id="saveStr" type="number"></td>
+						<td><input id="saveDex" type="number"></td>
+						<td><input id="saveCon" type="number"></td>
+						<td><input id="saveInt" type="number"></td>
+						<td><input id="saveWis" type="number"></td>
+						<td><input id="saveCha" type="number"></td>
+					</tr>
+				</table>
+
+			</div>
+			<div>
+				<p>Save Proficiencies</p>
+			</div>
+			<div>
+				<p>Resistances</p>
+				<table>
+					<tr>
+						<th></th>
+						<th>Acid</th>
+						<th>Bludgeoning</th>
+						<th>Cold</th>
+						<th>Fire</th>
+						<th>Force</th>
+						<th>Lightning</th>
+						<th>Necrotic</th>
+						<th>Piercing</th>
+						<th>Poison</th>
+						<th>Psychic</th>
+						<th>Radiant</th>
+						<th>Slashing</th>
+						<th>Thunder</th>
+					</tr>
+					<tr>
+						<th>Immunity</th>
+						<td><input id="damageImmunityAcid" type="radio" name="acid"></td>
+						<td><input id="damageImmunityBludgeoning" type="radio" name="bludgeoning"></td>
+						<td><input id="damageImmunityCold" type="radio" name="cold"></td>
+						<td><input id="damageImmunityFire" type="radio" name="fire"></td>
+						<td><input id="damageImmunityForce" type="radio" name="force"></td>
+						<td><input id="damageImmunityLightning" type="radio" name="lightning"></td>
+						<td><input id="damageImmunityNecrotic" type="radio" name="necrotic"></td>
+						<td><input id="damageImmunityPiercing" type="radio" name="piercing"></td>
+						<td><input id="damageImmunityPoison" type="radio" name="poison"></td>
+						<td><input id="damageImmunityPsychic" type="radio" name="psychic"></td>
+						<td><input id="damageImmunityRadiant" type="radio" name="radiant"></td>
+						<td><input id="damageImmunitySlashing" type="radio" name="slashing"></td>
+						<td><input id="damageImmunityThunder" type="radio" name="thunder"></td>
+					</tr>
+					<tr>
+						<th>Resistance</th>
+						<td><input id="damageResistanceAcid" type="radio" name="acid"></td>
+						<td><input id="damageResistanceBludgeoning" type="radio" name="bludgeoning"></td>
+						<td><input id="damageResistanceCold" type="radio" name="cold"></td>
+						<td><input id="damageResistanceFire" type="radio" name="fire"></td>
+						<td><input id="damageResistanceForce" type="radio" name="force"></td>
+						<td><input id="damageResistanceLightning" type="radio" name="lightning"></td>
+						<td><input id="damageResistanceNecrotic" type="radio" name="necrotic"></td>
+						<td><input id="damageResistancePiercing" type="radio" name="piercing"></td>
+						<td><input id="damageResistancePoison" type="radio" name="poison"></td>
+						<td><input id="damageResistancePsychic" type="radio" name="psychic"></td>
+						<td><input id="damageResistanceRadiant" type="radio" name="radiant"></td>
+						<td><input id="damageResistanceSlashing" type="radio" name="slashing"></td>
+						<td><input id="damageResistanceThunder" type="radio" name="thunder"></td>
+					</tr>
+					<tr>
+						<th>Normal</th>
+						<td><input type="radio" name="acid" checked></td>
+						<td><input type="radio" name="bludgeoning" checked></td>
+						<td><input type="radio" name="cold" checked></td>
+						<td><input type="radio" name="fire" checked></td>
+						<td><input type="radio" name="force" checked></td>
+						<td><input type="radio" name="lightning" checked></td>
+						<td><input type="radio" name="necrotic" checked></td>
+						<td><input type="radio" name="piercing" checked></td>
+						<td><input type="radio" name="poison" checked></td>
+						<td><input type="radio" name="psychic" checked></td>
+						<td><input type="radio" name="radiant" checked></td>
+						<td><input type="radio" name="slashing" checked></td>
+						<td><input type="radio" name="thunder" checked></td>
+					</tr>
+					<tr>
+						<th>Vulnerability</th>
+						<td><input id="damageVulnerabilityAcid" type="radio" name="acid"></td>
+						<td><input id="damageVulnerabilityBludgeoning" type="radio" name="bludgeoning"></td>
+						<td><input id="damageVulnerabilityCold" type="radio" name="cold"></td>
+						<td><input id="damageVulnerabilityFire" type="radio" name="fire"></td>
+						<td><input id="damageVulnerabilityForce" type="radio" name="force"></td>
+						<td><input id="damageVulnerabilityLightning" type="radio" name="lightning"></td>
+						<td><input id="damageVulnerabilityNecrotic" type="radio" name="necrotic"></td>
+						<td><input id="damageVulnerabilityPiercing" type="radio" name="piercing"></td>
+						<td><input id="damageVulnerabilityPoison" type="radio" name="poison"></td>
+						<td><input id="damageVulnerabilityPsychic" type="radio" name="psychic"></td>
+						<td><input id="damageVulnerabilityRadiant" type="radio" name="radiant"></td>
+						<td><input id="damageVulnerabilitySlashing" type="radio" name="slashing"></td>
+						<td><input id="damageVulnerabilityThunder" type="radio" name="thunder"></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<p>Condition Immunities</p>
+				<label>Blinded <input id="conditionImmunityBlinded" type="checkbox"></label>
+				<label>Charmed <input id="conditionImmunityCharmed" type="checkbox"></label>
+				<label>Deafened <input id="conditionImmunityDeafened" type="checkbox"></label>
+				<label>Fatigued <input id="conditionImmunityFatigued" type="checkbox"></label>
+				<label>Frightened <input id="conditionImmunityFrightened" type="checkbox"></label>
+				<label>Grappled <input id="conditionImmunityGrappled" type="checkbox"></label>
+				<label>Incapacitated <input id="conditionImmunityIncapacitated" type="checkbox"></label>
+				<label>Invisible <input id="conditionImmunityInvisible" type="checkbox"></label>
+				<label>Paralyzed <input id="conditionImmunityParalyzed" type="checkbox"></label>
+				<label>Petrified <input id="conditionImmunityPetrified" type="checkbox"></label>
+				<label>Poisoned <input id="conditionImmunityPoisoned" type="checkbox"></label>
+				<label>Prone <input id="conditionImmunityProne" type="checkbox"></label>
+				<label>Restrained <input id="conditionImmunityRestrained" type="checkbox"></label>
+				<label>Unconscious <input id="conditionImmunityUnconscious" type="checkbox"></label>					
+			</div>
+			<div>
+				<p>Senses</p>
+				<label>Passive Perception: <input id="sensesPassivePerception" type="number" min="0" placeholder="10" /></label>
+				<label>Darkvision: <input id="sensesDarkvision" type="number" min="0" placeholder="10" /></label>
+				<label>Blindsight: <input id="sensesBlindsight" type="number" min="0" placeholder="10" /></label>
+				<label>Tremorsense: <input id="sensesTremorsense" type="number" min="0" placeholder="10" /></label>
+				<label>Truesight: <input id="sensesTruesight" type="number" min="0" placeholder="10" /></label>
+			</div>
+			<div>
+				<label>Languages: <input id="languages" type="text"></label>
+			</div>
+			<div>
+				<p>Special Qualities</p>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td><textarea id="sq1name"></textarea></td>
+						<td><textarea id="sq1desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq2name"></textarea></td>
+						<td><textarea id="sq2desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq3name"></textarea></td>
+						<td><textarea id="sq3desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq4name"></textarea></td>
+						<td><textarea id="sq4desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq5name"></textarea></td>
+						<td><textarea id="sq5desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq6name"></textarea></td>
+						<td><textarea id="sq6desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq7name"></textarea></td>
+						<td><textarea id="sq7desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq8name"></textarea></td>
+						<td><textarea id="sq8desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq9name"></textarea></td>
+						<td><textarea id="sq9desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq10name"></textarea></td>
+						<td><textarea id="sq10desc"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="sq11name"></textarea></td>
+						<td><textarea id="sq11desc"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<p>Actions</p>
+				<table class="repeatable">
+					<tr>
+						<th>Name</th>
+						<th>Recharge</th>
+						<th>Attack Type</th>
+						<th>To Hit</th>
+						<th>Damage</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td><textarea id="act1Name"></textarea></td>
+						<td><textarea id="act1Recharge"></textarea></td>
+						<td><textarea id="act1AttackType"></textarea></td>
+						<td><textarea id="act1ToHit"></textarea></td>
+						<td><textarea id="act1Damage"></textarea></td>
+						<td><textarea id="act1Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act2Name"></textarea></td>
+						<td><textarea id="act2Recharge"></textarea></td>
+						<td><textarea id="act2AttackType"></textarea></td>
+						<td><textarea id="act2ToHit"></textarea></td>
+						<td><textarea id="act2Damage"></textarea></td>
+						<td><textarea id="act2Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act3Name"></textarea></td>
+						<td><textarea id="act3Recharge"></textarea></td>
+						<td><textarea id="act3AttackType"></textarea></td>
+						<td><textarea id="act3ToHit"></textarea></td>
+						<td><textarea id="act3Damage"></textarea></td>
+						<td><textarea id="act3Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act4Name"></textarea></td>
+						<td><textarea id="act4Recharge"></textarea></td>
+						<td><textarea id="act4AttackType"></textarea></td>
+						<td><textarea id="act4ToHit"></textarea></td>
+						<td><textarea id="act4Damage"></textarea></td>
+						<td><textarea id="act4Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act5Name"></textarea></td>
+						<td><textarea id="act5Recharge"></textarea></td>
+						<td><textarea id="act5AttackType"></textarea></td>
+						<td><textarea id="act5ToHit"></textarea></td>
+						<td><textarea id="act5Damage"></textarea></td>
+						<td><textarea id="act5Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act6Name"></textarea></td>
+						<td><textarea id="act6Recharge"></textarea></td>
+						<td><textarea id="act6AttackType"></textarea></td>
+						<td><textarea id="act6ToHit"></textarea></td>
+						<td><textarea id="act6Damage"></textarea></td>
+						<td><textarea id="act6Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act7Name"></textarea></td>
+						<td><textarea id="act7Recharge"></textarea></td>
+						<td><textarea id="act7AttackType"></textarea></td>
+						<td><textarea id="act7ToHit"></textarea></td>
+						<td><textarea id="act7Damage"></textarea></td>
+						<td><textarea id="act7Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act8Name"></textarea></td>
+						<td><textarea id="act8Recharge"></textarea></td>
+						<td><textarea id="act8AttackType"></textarea></td>
+						<td><textarea id="act8ToHit"></textarea></td>
+						<td><textarea id="act8Damage"></textarea></td>
+						<td><textarea id="act8Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act9Name"></textarea></td>
+						<td><textarea id="act9Recharge"></textarea></td>
+						<td><textarea id="act9AttackType"></textarea></td>
+						<td><textarea id="act9ToHit"></textarea></td>
+						<td><textarea id="act9Damage"></textarea></td>
+						<td><textarea id="act9Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act10Name"></textarea></td>
+						<td><textarea id="act10Recharge"></textarea></td>
+						<td><textarea id="act10AttackType"></textarea></td>
+						<td><textarea id="act10ToHit"></textarea></td>
+						<td><textarea id="act10Damage"></textarea></td>
+						<td><textarea id="act10Description"></textarea></td>
+					</tr>
+					<tr>
+						<td><textarea id="act11Name"></textarea></td>
+						<td><textarea id="act11Recharge"></textarea></td>
+						<td><textarea id="act11AttackType"></textarea></td>
+						<td><textarea id="act11ToHit"></textarea></td>
+						<td><textarea id="act11Damage"></textarea></td>
+						<td><textarea id="act11Description"></textarea></td>
+					</tr>
+					
+				</table>
+			</div>
+			<div>
+				<h2>Calculation Fields</h2>
+				<p>Use these fields to build and calculate homebrew creatures.</p>
+				<label>Target CR: <input id="calcTargetCr" type="number" min="0"></label>
+				<label>Calculated CR: <input id="calcCalcCr" type="number" min="0" disabled></label>
+				<label>Use Stat Calculation: <input id="calcUseStats" type="checkbox"></label>
+				<hr>
+				<p>Baseline Stats from Challenge Rating</p>
+				<label>Proficiency Bonus: <input id="calcBaseProfBonus" type="number" disabled></label>
+				<label>Armor Class: <input id="calcBaseAc" type="number" min="0" disabled></label>				
+				<label>Hit Points: <input id="calcBaseHp" type="number" disabled></label>
+				<label>Attack Bonus: <input id="calcBaseAttackBonus" type="number" disabled></label>
+				<label>Damage Per Round: <input id="calcBaseDpr" type="number" disabled></label>
+				<label>Save DC: <input id="calcBaseSaveDc" type="number" disabled></label>
+				<hr>
+				<label>Attack Stat:
+					<select id="calcAttackStat">
+						<option>Strength</option>
+						<option>Dexterity</option>
+						<option>Constitution</option>
+						<option>Intelligence</option>
+						<option>Wisdom</option>
+						<option>Charisma</option>
+					</select>
+				</label>
+				<label>Attack Bonus: <input id="calcAttackBonus" type="number"></label>
+				<label>Casting Stat:
+					<select id="calcCastingStat">
+						<option>Strength</option>
+						<option>Dexterity</option>
+						<option>Constitution</option>
+						<option>Intelligence</option>
+						<option>Wisdom</option>
+						<option>Charisma</option>
+					</select>
+				</label>
+				<label>Save DC: <input id="calcSaveDc" type="number"></label>
+				<hr>
+				<label>Effective HP Multiplier From Resistances: <input id="calcEHMR" type="number" min="0" disabled></label>
+				<label>Effective HP Multiplier From Immunities: <input id="calcEHMI" type="number" min="0" disabled></label>
+				<label>Effective HP Multiplier From Features: <input id="calcEHMF" type="number" min="0"></label>
+				<label>Effective HP: <input id="calcEffectiveHp" type="number" min="0" disabled></label>
+				<hr>
+				<label>Round 1 Damage: <input id="calcRoundOneDamage" type="number" min="0"></label>
+				<label>Round 2 Damage: <input id="calcRoundTwoDamage" type="number" min="0"></label>
+				<label>Round 3 Damage: <input id="calcRoundThreeDamage" type="number" min="0"></label>
+				<label>Average Damage: <input id="calcAvgDamage" type="number" min="0" disabled></label>
+			</div>
+			<button onClick="SaveMonster()">Save Monster</button>
+		</div>
+		<div id="MonsterLists" class="page">
+			<h2>MonsterLists</h2>
+		</div>
+		<div id="EncounterBuilder" class="page">
+			<h2>EncounterBuilder</h2>
+		</div>
+		<div id="EncounterSheet" class="page">
+			<h2>EncounterSheet</h2>
+		</div>
+		<div id="SpellList" class="page">
+			<h2>SpellList</h2>
+		</div>
+	</div>
+	<div class="footer">
+		footer
+	</div>
+    <script src="./index.js"></script>
+  </body>
+</html>

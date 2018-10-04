@@ -1,0 +1,80 @@
+{
+	"facemonster": {
+		"icon": "f",
+		"name": "Facemonster",
+		"cr": 3,
+		"xp": 900,
+		"source": "mm 123",
+		"type": "Demon",
+		"subtype": "Tanari",
+		"alignment": "Chaotic Evil",
+		"hp": 50,
+		"ac": 15,
+		"defenses": [
+			"Immune to Fire Damage",
+			"Immune to Sleep"
+		],
+		"sq": [
+			"Spiky Eyes",
+			"Long Arms"
+		],
+		"actions": [
+			"Multiattack",
+			"Spear",
+			"Claws",
+			"Bite"
+		]
+	},
+		"Burnerer": {
+		"icon": "f",
+		"name": "Burnerer",
+		"cr": 3,
+		"xp": 900,
+		"source": "mm 123",
+		"type": "Demon",
+		"subtype": "Tanari",
+		"alignment": "Chaotic Evil",
+		"hp": 50,
+		"ac": 15,
+		"defenses": [
+			"Immune to Fire Damage",
+			"Immune to Sleep"
+		],
+		"sq": [
+			"Spiky Eyes",
+			"Long Arms"
+		],
+		"actions": [
+			"Multiattack",
+			"Spear",
+			"Claws",
+			"Bite"
+		]
+	},
+		"Lecturer": {
+		"icon": "f",
+		"name": "Lecturer",
+		"cr": 3,
+		"xp": 900,
+		"source": "mm 123",
+		"type": "Demon",
+		"subtype": "Tanari",
+		"alignment": "Chaotic Evil",
+		"hp": 50,
+		"ac": 15,
+		"defenses": [
+			"Immune to Fire Damage",
+			"Immune to Sleep"
+		],
+		"sq": [
+			"Spiky Eyes",
+			"Long Arms"
+		],
+		"actions": [
+			"Multiattack",
+			"Spear",
+			"Claws",
+			"Bite"
+		]
+	}
+}
