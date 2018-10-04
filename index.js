@@ -10,7 +10,7 @@
 */
 
 let data = {}
-let MTheader = null;
+data.MTheader = null;
 let inputTypes = [
 	'input[type="checkbox"]',
 	'input[type="radio"]',
@@ -84,41 +84,65 @@ function SwitchPage(e){
 
 */
 function MTPopulateRows () {
-	// remove all rows first
-	let rows = document.querySelectorAll('[data-monster]');
-	console.log(rows);
-	for (let i = 0; i < rows.length; i++){
-		rows[i].remove();
+	// populate each row based on the `data-monster` attribute.
+	// look it up from data.monsters
+	let rows = toArray(document.getElementsByClassName('monster'));
+	for (var i = rows.length - 1; i >= 0; i--) {
+		let name = rows[i].getAttribute('data-monster');
+		let monster = data.monsters[name];
+		console.log(monster);
 	}
-	// add new rows
-	for (let key in data.monsters) {
-		let mon = data.monsters[key];
-		//console.log(mon);
-		MTAddRow(mon);
+}
+function MTResizeTable () {
+	let monsters = data.monsters;
+	let rows = document.getElementsByClassName('monster');
+	if (monsters && rows) {
+		let monstercount = Object.keys(monsters).length;
+		let rowcount = rows.length;
+		if (monstercount > rowcount){
+			// Add rows to the table
+			let newrows = monstercount - rowcount;
+			for (let i = newrows + 1; i > 0; i--){
+				MTAddRow();
+				// TODO: Assign the data-monster attribute to each
+				// Populate the data to all rows
+			}
+		}
+		else if (rowcount > monstercount) {
+			// remove rows from the table
+			let removerows = rowcount - monstercount;
+			for (let i = removerows + 1; i > 0; i--){
+				MTRemoveRow();
+			}
+		}
 	}
 }
 function MTAddRow (monster){
-	if(!monster){
+	/*if(!monster){
+		console.log('no monster passed');
 		return;
-	}
+	}*/
 	let newrow = document.createElement('tr');
 	newrow.classList.add("monster");
-	newrow.setAttribute('data-monster', monster);
-	let children = [].slice.call(MTheader.children);
+	newrow.setAttribute('data-monster', 'Facemonster');
+	let children = [].slice.call(data.MTheader.children);
 	children.forEach(function(child){
 		let newcell = document.createElement('td');
 		newcell.innerHTML = '-'
-		newcell.innerHTML = MTFillCell(MTGetCellParams(child), monster);
+		//newcell.innerHTML = MTFillCell(MTGetCellParams(child), monster);
 		newrow.append(newcell);
 	});
 	if (monster) {
 		// apply monster stats
 	}
-	MTheader.parentElement.append(newrow);
+	data.MTheader.parentElement.append(newrow);
+}
+function MTRemoveRow(){
+
 }
 function MTGetCellParams (headercell) {
 	let params = {}
-	params.inputType = headercell.getAttribute('data-coltype');
+	params.inputType = headercell.getAttribute('data-field');
 	params.inputName = headercell.innerHTML;
 	return params;
 }
@@ -129,8 +153,8 @@ function MTFillCell (params, monster) {
 	return elem;
 }
 function MTGetColumns () {
-	MTheader = document.querySelector("#MonsterTable table tr");
-	//console.log(MTheader);
+	data.MTheader = document.querySelector("#MonsterTable table tr");
+	//console.log(data.MTheader);
 }
 
 /*
@@ -155,7 +179,8 @@ function MTGetColumns () {
 
 function SaveMonster () {
 	let mono = CreateMonsterObject();
-	data.monsters[mono[monsterName]] = mono;
+	console.log(mono);
+	data.monsters[mono.monsterName] = mono;
 	MTPopulateRows();
 }
 function CreateMonsterObject(){
@@ -227,6 +252,7 @@ function LoadDefaultMonsters() {
 	request.onload = function () {
 		data.monsters = request.response;
 		//console.log(data.monsters);
+		MTResizeTable();
 		MTPopulateRows();
 	}
 }
@@ -235,4 +261,19 @@ function LoadFromLS () {
 }
 function SaveToLS () {
 
+}
+
+/* 
+
+#    # ##### # #      # ##### # ######  ####  
+#    #   #   # #      #   #   # #      #      
+#    #   #   # #      #   #   # #####   ####  
+#    #   #   # #      #   #   # #           # 
+#    #   #   # #      #   #   # #      #    # 
+ ####    #   # ###### #   #   # ######  ####
+
+*/
+
+function toArray(nodelist){
+	return Array.from(nodelist);
 }
