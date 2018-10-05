@@ -12,6 +12,7 @@
 let data = {}
 data.MTheader = null;
 data.trash = {};
+data.isDirty = false;
 let inputTypes = [
 	'input[type="checkbox"]',
 	'input[type="radio"]',
@@ -93,6 +94,7 @@ function MTInitTable () {
 		console.log(monsterName);
 		MTAddRow(monsterName);
 	}
+	UpdateEditList();
 }
 function MTAddRow (monsterName){
 	let newrow = document.createElement('tr');
@@ -101,17 +103,18 @@ function MTAddRow (monsterName){
 	let children = [].slice.call(data.MTheader.children);
 	children.forEach(function(child){
 		let newcell = document.createElement('td');
-		newcell.innerHTML = '-'
+		newcell.innerHTML = '';
 		newcell.setAttribute('data-field', child.getAttribute('data-field'));
 		newcell.setAttribute('data-calc', child.getAttribute('data-calc'));
 		newrow.append(newcell);
 	});
 	data.MTheader.parentElement.append(newrow);
 	MTPopulateRow(monsterName);
+
 }
 function MTPopulateRow (monsterName) {
 	// Get the target row
-	let row = document.querySelector('[data-monster="' + monsterName + '"]');
+	let row = GetRowFromName(monsterName);
 	let monsterObject = data.monsters[monsterName];
 	// iterate through cells and get values from monster
 	let cells = Array.from(row.getElementsByTagName('td'));
@@ -138,6 +141,7 @@ function MTPopulateRow (monsterName) {
 					cell.innerHTML = 'a';
 					break;
 				case 'buttons':
+					cell.innerHTML = '';
 					let editButton = document.createElement('button');
 					editButton.innerHTML = 'E';
 					cell.appendChild(editButton);
@@ -168,7 +172,7 @@ function MTDeleteMonsterByName(monsterName){
 	delete data.monsters[monsterName];
 	console.log(data.trash);
 	// Remove the row
-	let row = document.querySelector('tr[data-monster="' + monsterName + '"');
+	let row = GetRowFromName(monsterName);
 	row.outerHTML = "";
 
 }
@@ -196,25 +200,50 @@ function MTGetColumns () {
 
 */
 
-
+function UpdateEditList () {
+	// find the dropdown
+	let select = document.getElementById('editingMonster');
+	// remove children
+	select.innerHTML = '<option>Select...</option>';
+	// set up list
+	console.log(data.monsters);
+	for (let i = 0; i < Object.keys(data.monsters).length; i++){
+		monsterName = Object.keys(data.monsters)[i];
+		console.log(monsterName);
+		let option = document.createElement('option');
+		option.innerHTML = monsterName;
+		select.appendChild(option);
+	}
+}
 function SaveMonster () {
-	let mono = CreateMonsterObject();
-	console.log(mono);
-	data.monsters[mono.monsterName] = mono;
-	MTPopulateRows();
+	let monsterObject = CreateMonsterObject();
+	let monsterName = monsterObject.monsterName;
+	console.log(monsterObject);
+	data.monsters[monsterName] = monsterObject;
+	// update the row if it exists, otherwise create new
+	let row = GetRowFromName(monsterName);
+	console.log(row);
+	if (row){
+		MTPopulateRow(monsterName);
+	}
+	else {
+		MTAddRow(monsterName);
+	}
+	UpdateEditList();
+	SetEditorClean();
 }
 function CreateMonsterObject(){
-	let mono = {};
+	let monsterObject = {};
 	let editorDiv = document.getElementById('MonsterEditor');
 	// Do each type of input, 1 at a time
 	inputTypes.forEach(function(type){
-		SerializeInputs(type, editorDiv, mono)
+		SerializeInputs(type, editorDiv, monsterObject)
 	});
 	//console.log(labels);
-	console.log(JSON.stringify(mono, null, 2));
-	return mono;
+	console.log(JSON.stringify(monsterObject, null, 2));
+	return monsterObject;
 }
-function SerializeInputs(queryString, editorDiv, mono){
+function SerializeInputs(queryString, editorDiv, monsterObject){
 	let elements = editorDiv.querySelectorAll(queryString);
 	for (let i = elements.length - 1; i >= 0; i--) {
 		let element = elements[i];
@@ -228,7 +257,7 @@ function SerializeInputs(queryString, editorDiv, mono){
 		if (element.hasAttribute('disabled') || !key || !value){
 			continue;
 		}
-		mono[key] = value;
+		monsterObject[key] = value;
 	}
 }
 function UpdateCalculatedFields (){
@@ -263,6 +292,14 @@ function SetupFields() {
 #####  #    #   #   #    # 
 
 */
+function SetEditorClean() {
+	//data.isDirty = false;
+	// Update UI
+}
+function SetEditorDirty() {
+	//data.isDirty = true;
+	// Update UI
+}
 function LoadDefaultMonsters() {
 	let dataUrl = './monsters.json'
 	let request = new XMLHttpRequest();
@@ -295,4 +332,7 @@ function SaveToLS () {
 
 function toArray(nodelist){
 	return Array.from(nodelist);
+}
+function GetRowFromName (monsterName){
+	return document.querySelector('tr[data-monster="' + monsterName + '"');
 }

@@ -18,7 +18,6 @@
 	</div>
 	<div class="content">
 		<div id="MonsterTable" class="page activePage">
-			<h2>MonsterTable</h2>
 			<table>
 				<tr>
 					<!-- <th data-field="monsterIcon">Icon</th> -->
@@ -39,10 +38,10 @@
 			</table>
 		</div>
 		<div id="MonsterEditor" class="page">
-			<h2>MonsterEditor</h2>
 			<div>
 				<button onClick="SaveMonster()">Save Monster</button>
-				<select>
+				<button onClick="LoadMonster()">Edit Monster</button>
+				<select id="editingMonster">
 					<option>monster</option>
 				</select>
 			</div>
