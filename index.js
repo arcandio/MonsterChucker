@@ -11,6 +11,7 @@
 
 let data = {}
 data.MTheader = null;
+data.trash = {};
 let inputTypes = [
 	'input[type="checkbox"]',
 	'input[type="radio"]',
@@ -140,16 +141,36 @@ function MTPopulateRow (monsterName) {
 					let editButton = document.createElement('button');
 					editButton.innerHTML = 'E';
 					cell.appendChild(editButton);
+					let listButton = document.createElement('button');
+					listButton.innerHTML = '+';
+					cell.appendChild(listButton);
 					let delButton = document.createElement('button');
 					delButton.innerHTML = 'X';
+					delButton.addEventListener('click', MTRowDeleteButton);
 					cell.appendChild(delButton);
 					break;
 			}
 		}
 	});
 }
-function MTDeleteMonster(monster){
+function MTRowDeleteButton (e) {
+	// get the monster name of the row
+	let button = e.srcElement;
+	let row = button.parentElement.parentElement;
+	let monsterName = row.getAttribute('data-monster');
+	console.log(monsterName);
+	MTDeleteMonsterByName(monsterName);
+}
+function MTDeleteMonsterByName(monsterName){
 	// Actually move them to data.trash
+	let monsterObject = data.monsters[monsterName];
+	data.trash[monsterName] = monsterObject;
+	delete data.monsters[monsterName];
+	console.log(data.trash);
+	// Remove the row
+	let row = document.querySelector('tr[data-monster="' + monsterName + '"');
+	row.outerHTML = "";
+
 }
 function MTGetColumns () {
 	data.MTheader = document.querySelector("#MonsterTable table tr");
